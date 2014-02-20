@@ -15,7 +15,7 @@ HOSTS="$@"
 
 ZFS_FILESYSTEM="tank"
 
-OUTPUT_DIR='./tmp'
+OUTPUT_DIR='/tmp'
 BASENAME=$(basename $0)
 NAME="${BASENAME%.*}"
 
