@@ -115,8 +115,13 @@ class ZFSQuotaParser
           cur = e[:space]
           e[:space] = cur.to_i + space.to_i
         else
+          begin
+            name = Etc.send(@get_id_method, id).name
+          rescue ArgumentError
+            next
+          end
           e = {}
-          e[:name] = Etc.send(@get_id_method, id).name
+          e[:name] = name
           e[:id] = id
           e[:space] = space
           e[:mtime] = mtime
