@@ -1,6 +1,6 @@
 #!/bin/bash -x
 
-CONF="/etc/defaults/fhgfs-ctl-zfs-getquota.conf"
+CONF="/etc/default/fhgfs-ctl-zfs-getquota.conf"
 
 if [ -f $CONF ]; then
   source $CONF

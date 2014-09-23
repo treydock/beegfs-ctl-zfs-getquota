@@ -13,7 +13,7 @@ exec_cmd() {
 HOSTS="$@"
 [ -z "$HOSTS" ] && HOSTS=$(get_fhgfs_storage_nodes)
 
-CONF="/etc/defaults/fhgfs-ctl-zfs-getquota.conf"
+CONF="/etc/default/fhgfs-ctl-zfs-getquota.conf"
 
 if [ -f $CONF ]; then
   source $CONF
