@@ -13,7 +13,7 @@ ${APP_ROOT}/fhgfs-ctl-zfs-getquota-collector 1>/dev/null
 
 for quotatype in user group; do
   for format in csv yaml; do
-    ${APP_ROOT}/zfs_get_quota.rb parse \
+    ${APP_ROOT}/zfs_get_quota parse \
       --quotatype=${quotatype} \
       --format=${format} \
       --inputfile=/tmp/fhgfs-ctl-zfs-getquota-collector.${quotatype}space \
