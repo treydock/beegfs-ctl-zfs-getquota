@@ -1,0 +1,11 @@
+# Directory the application is installed
+APP_ROOT="/home/admin/fhgfs-ctl-zfs-getquota"
+
+# Prefix given to output files
+OUTPUT_PREFIX="fhgfs"
+
+# ZFS filesystem name that is used by fhgfs-storage
+ZFS_FILESYSTEM="tank"
+
+# Directory to store output files
+OUTPUT_DIR="/tmp"

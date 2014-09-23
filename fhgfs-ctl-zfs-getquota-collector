@@ -13,9 +13,15 @@ exec_cmd() {
 HOSTS="$@"
 [ -z "$HOSTS" ] && HOSTS=$(get_fhgfs_storage_nodes)
 
-ZFS_FILESYSTEM="tank"
+CONF="/etc/defaults/fhgfs-ctl-zfs-getquota.conf"
 
-OUTPUT_DIR='/tmp'
+if [ -f $CONF ]; then
+  source $CONF
+fi
+
+ZFS_FILESYSTEM=${ZFS_FILESYSTEM:='tank'}
+OUTPUT_DIR=${OUTPUT_DIR:='/tmp'}
+
 BASENAME=$(basename $0)
 NAME="${BASENAME%.*}"
 

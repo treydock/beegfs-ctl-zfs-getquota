@@ -1,13 +1,24 @@
-#!/bin/bash
+#!/bin/bash -x
 
-APP_ROOT="/home/admin/fhgfs-ctl-zfs-getquota"
-OUTPUT_PREFIX="fhgfs"
+CONF="/etc/defaults/fhgfs-ctl-zfs-getquota.conf"
+
+if [ -f $CONF ]; then
+  source $CONF
+fi
+
+APP_ROOT=${APP_ROOT:='/home/admin/fhgfs-ctl-zfs-getquota'}
+OUTPUT_PREFIX=${OUTPUT_PREFIX:='fhgfs'}
 
 ${APP_ROOT}/fhgfs-ctl-zfs-getquota-collector 1>/dev/null
 
 for quotatype in user group; do
   for format in csv yaml; do
-    ${APP_ROOT}/zfs_get_quota.rb parse --quotatype=${quotatype} --format=${format} --inputfile=/tmp/fhgfs-ctl-zfs-getquota-collector.${quotatype}space --output=/tmp/${OUTPUT_PREFIX}_${quotatype}space.${format} 1>/dev/null
+    ${APP_ROOT}/zfs_get_quota.rb parse \
+      --quotatype=${quotatype} \
+      --format=${format} \
+      --inputfile=/tmp/fhgfs-ctl-zfs-getquota-collector.${quotatype}space \
+      --output=/tmp/${OUTPUT_PREFIX}_${quotatype}space.${format} \
+      1>/dev/null
   done
 done
 
