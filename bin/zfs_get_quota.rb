@@ -5,8 +5,6 @@ require 'etc'
 require 'csv'
 require 'json'
 require 'yaml'
-require 'optparse'
-require 'logger'
 require 'terminal-table'
 require 'filesize'
 require 'pp'
@@ -149,13 +147,19 @@ end
 
 class ZFSGetQuota < Thor
   method_option :quotatype, :default => 'user', :aliases => "-t", :desc => "Type of quota output to parse. Valid options are 'user' and 'group'."
-  method_option :output, :default => '/tmp/zfs_userspace.yaml', :aliases => "-o", :desc => "Where to output quota report"
+  method_option :output, :default => 'DEFAULT', :aliases => "-o", :desc => "Where to output quota report"
   method_option :inputfile, :required => true, :aliases => "-i", :desc => "File from running 'zfs userspace'"
   method_option :format, :default => 'yaml', :aliases => "-f", :desc => "Output format"
   desc 'parse', "Parse raw quota input files"
   def parse
     validate_quotatype(options.quotatype, 'parse')
-    @parser = ZFSQuotaParser.new(options.quotatype, options.inputfile, options.output, options.format)
+    if options.output == 'DEFAULT'
+      output = "/tmp/zfs_#{options.quotatype}space.yaml"
+    else
+      output = options.output
+    end
+
+    @parser = ZFSQuotaParser.new(options.quotatype, options.inputfile, output, options.format)
     @parser.execute!
   end
 
