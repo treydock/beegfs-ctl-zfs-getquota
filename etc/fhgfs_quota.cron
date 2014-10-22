@@ -1,4 +1,4 @@
-#!/bin/bash -x
+#!/bin/bash
 
 CONF="/etc/default/fhgfs-ctl-zfs-getquota.conf"
 
