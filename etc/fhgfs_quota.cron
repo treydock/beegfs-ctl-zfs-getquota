@@ -6,18 +6,19 @@ if [ -f $CONF ]; then
   source $CONF
 fi
 
-APP_ROOT=${APP_ROOT:='/home/admin/fhgfs-ctl-zfs-getquota'}
-OUTPUT_PREFIX=${OUTPUT_PREFIX:='fhgfs'}
+APP_ROOT=${APP_ROOT:='/usr/share/fhgfs-ctl-zfs-getquota'}
+OUTPUT_PREFIX=${OUTPUT_PREFIX:='/tmp/fhgfs'}
+COLLECTOR_OUTPUT_PREFIX=${COLLECTOR_OUTPUT_PREFIX:='/tmp/fhgfs-ctl-zfs-getquota-collector'}
 
 ${APP_ROOT}/fhgfs-ctl-zfs-getquota-collector 1>/dev/null
 
 for quotatype in user group; do
-  for format in csv yaml; do
+  for format in csv json; do
     ${APP_ROOT}/zfs_get_quota parse \
       --quotatype=${quotatype} \
       --format=${format} \
-      --inputfile=/tmp/fhgfs-ctl-zfs-getquota-collector.${quotatype}space \
-      --output=/tmp/${OUTPUT_PREFIX}_${quotatype}space.${format} \
+      --inputfile=${COLLECTOR_OUTPUT_PREFIX}.${quotatype}space \
+      --output=${OUTPUT_PREFIX}_${quotatype}space.${format} \
       1>/dev/null
   done
 done
