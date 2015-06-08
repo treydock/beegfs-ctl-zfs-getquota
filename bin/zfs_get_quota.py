@@ -122,7 +122,11 @@ def report(args, parser):
     for entry in sorted_entries:
         total_space = total_space + entry["space"]
         space = sizeof_fmt(entry["space"])
-        table.add_row([entry["name"], entry["id"], space, entry["mtime"]])
+        if args.names:
+            if entry["name"] in args.names:
+                table.add_row([entry["name"], entry["id"], space, entry["mtime"]])
+        else:
+            table.add_row([entry["name"], entry["id"], space, entry["mtime"]])
     table.add_row(["","","",""])
     table.add_row(["Total", "---", sizeof_fmt(total_space), "---"])
     print table
@@ -139,6 +143,7 @@ parser_parse.add_argument("-f", "--format", help="Output format", choices=SUPPOR
 parser_parse.set_defaults(func=parse)
 
 parser_report.add_argument("-i", "--inputfile", help="Input file", dest="input", required=True)
+parser_report.add_argument("-n", "--names", nargs="+", help="list of user or group names to report", dest="names", required=False, default=[])
 parser_report.set_defaults(func=report)
 
 args = parser.parse_args()
