@@ -41,3 +41,7 @@ To view the report for group usage:
     /usr/share/fhgfs-ctl-zfs-getquota/zfs_get_quota report -i /tmp/fhgfs_groupspace.json
 
 The CSV formatted files can be used instead of the JSON files.
+
+A filter of what is reported can be applied via `--names` argument.  To only show usage of users named foo and bar:
+
+    /usr/share/fhgfs-ctl-zfs-getquota/zfs_get_quota report -i /tmp/fhgfs_userspace.json --names foo bar
