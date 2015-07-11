@@ -90,7 +90,7 @@ def sizeof_fmt(num, suffix="B"):
 
 
 def report(args, parser):
-    table_headers = ["Name", "ID", "Space", "mtime"]
+    table_headers = ["Name", "ID", "Space"]
 
     filename, ext = os.path.splitext(os.path.basename(args.input))
     entries = None
@@ -124,11 +124,11 @@ def report(args, parser):
         space = sizeof_fmt(entry["space"])
         if args.names:
             if entry["name"] in args.names:
-                table.add_row([entry["name"], entry["id"], space, entry["mtime"]])
+                table.add_row([entry["name"], entry["id"], space])
         else:
-            table.add_row([entry["name"], entry["id"], space, entry["mtime"]])
-    table.add_row(["","","",""])
-    table.add_row(["Total", "---", sizeof_fmt(total_space), "---"])
+            table.add_row([entry["name"], entry["id"], space])
+    table.add_row(["","",""])
+    table.add_row(["Total", "---", sizeof_fmt(total_space)])
     print table
 
 parser = argparse.ArgumentParser()
