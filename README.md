@@ -25,8 +25,8 @@ The files installed
 
 * `/etc/default/beegfs-ctl-zfs-getquota.conf` - Configuration for cron script and collector
 * `/etc/cron.hourly/beegfs_quota` - Cron script that runs the collector
-* `/usr/share/beegfs-ctl-zfs-getquota/beegfs-ctl-zfs-getquota-collector` - Collector script that gets ZFS userspace and groupspace data
-* `/usr/share/beegfs-ctl-zfs-getquota/zfs_get_quota` - Python script that parses the collected data and also can report the data
+* `/usr/libexec/beegfs-ctl-zfs-getquota/beegfs-ctl-zfs-getquota-collector` - Collector script that gets ZFS userspace and groupspace data
+* `/usr/libexec/beegfs-ctl-zfs-getquota/zfs_get_quota` - Python script that parses the collected data and also can report the data
 
 ## Usage
 
@@ -34,14 +34,14 @@ Once installed the collector will pull data from all storage nodes and generate 
 
 To view the report for user usage:
 
-    /usr/share/beegfs-ctl-zfs-getquota/zfs_get_quota report -i /tmp/beegfs_userspace.json
+    /usr/libexec/beegfs-ctl-zfs-getquota/zfs_get_quota report -i /tmp/beegfs_userspace.json
 
 To view the report for group usage:
 
-    /usr/share/beegfs-ctl-zfs-getquota/zfs_get_quota report -i /tmp/beegfs_groupspace.json
+    /usr/libexec/beegfs-ctl-zfs-getquota/zfs_get_quota report -i /tmp/beegfs_groupspace.json
 
 The CSV formatted files can be used instead of the JSON files.
 
 A filter of what is reported can be applied via `--names` argument.  To only show usage of users named foo and bar:
 
-    /usr/share/beegfs-ctl-zfs-getquota/zfs_get_quota report -i /tmp/beegfs_userspace.json --names foo bar
+    /usr/libexec/beegfs-ctl-zfs-getquota/zfs_get_quota report -i /tmp/beegfs_userspace.json --names foo bar
