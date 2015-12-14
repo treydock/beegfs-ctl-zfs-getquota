@@ -1,0 +1,28 @@
+#!/bin/bash
+
+CONF="/etc/default/beegfs-ctl-zfs-getquota.conf"
+
+if [ -f $CONF ]; then
+  source $CONF
+fi
+
+APP_ROOT=${APP_ROOT:='/usr/share/beegfs-ctl-zfs-getquota'}
+OUTPUT_PREFIX=${OUTPUT_PREFIX:='/tmp/beegfs'}
+COLLECTOR_OUTPUT_PREFIX=${COLLECTOR_OUTPUT_PREFIX:='/tmp/beegfs-ctl-zfs-getquota-collector'}
+ARCHIVE_DIR=${ARCHIVE_DIR:='/var/tmp/beegfs-ctl-zfs-getquota'}
+
+${APP_ROOT}/beegfs-ctl-zfs-getquota-collector 1>/dev/null
+
+for quotatype in user group; do
+  for format in csv json; do
+    ${APP_ROOT}/zfs_get_quota parse \
+      --quotatype=${quotatype} \
+      --format=${format} \
+      --inputfile=${COLLECTOR_OUTPUT_PREFIX}.${quotatype}space \
+      --output=${OUTPUT_PREFIX}_${quotatype}space.${format} \
+      --archive-dir=${ARCHIVE_DIR} \
+      1>/dev/null
+  done
+done
+
+exit 0

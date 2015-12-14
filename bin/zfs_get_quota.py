@@ -9,6 +9,7 @@ import prettytable
 import pwd
 import re
 import sys
+from datetime import datetime
 
 YAML_SUPPORT = True
 try:
@@ -26,7 +27,7 @@ else:
 
 def parse(args, parser):
     if args.output == None:
-        args.output = "/tmp/fhgfs_%sspace.%s" % (args.quotatype, args.format)
+        args.output = "/tmp/beegfs_%sspace.%s" % (args.quotatype, args.format)
     print args
 
     entries = []
@@ -79,6 +80,14 @@ def parse(args, parser):
     elif args.format == "yaml":
         with open(args.output, "w") as yamlfile:
             yaml.dump(sorted_entries, yamlfile, default_flow_style=False)
+
+    if args.archive_dir:
+        _archive_timestamp = datetime.now().strftime("%Y%m%d-%H%M%S")
+        _archive_filename = "%s-%s" % (os.path.basename(args.output), _archive_timestamp)
+        _archive_file = os.path.join(args.archive_dir, _archive_filename)
+        if not os.path.isdir(args.archive_dir):
+            os.mkdir(args.archive_dir)
+        shutil.copyfile(args.output, _archive_file)
 
 
 def sizeof_fmt(num, suffix="B"):
@@ -140,6 +149,7 @@ parser_parse.add_argument("-i", "--inputfile", help="Input file", dest="input", 
 parser_parse.add_argument("-t", "--quotatype", help="Type of quota to parse", choices=["user", "group"], dest="quotatype", default="user")
 parser_parse.add_argument("-o", "--output", help="Where to output quota report", dest="output")
 parser_parse.add_argument("-f", "--format", help="Output format", choices=SUPPORTED_FORMATS, dest="format", default="json")
+parser_parse.add_argument("-a", "--archive-dir", help="Where to archive old quota report", dest="archive_dir")
 parser_parse.set_defaults(func=parse)
 
 parser_report.add_argument("-i", "--inputfile", help="Input file", dest="input", required=True)

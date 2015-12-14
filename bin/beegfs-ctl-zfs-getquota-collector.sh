@@ -1,7 +1,7 @@
 #!/bin/bash
 
-get_fhgfs_storage_nodes() {
-  fhgfs-ctl --listnodes --nodetype=storage | cut -d ' ' -f 1 | tr "\\n" " "
+get_beegfs_storage_nodes() {
+  beegfs-ctl --listnodes --nodetype=storage | cut -d ' ' -f 1 | tr "\\n" " "
 }
 
 exec_cmd() {
@@ -11,16 +11,16 @@ exec_cmd() {
 }
 
 HOSTS="$@"
-[ -z "$HOSTS" ] && HOSTS=$(get_fhgfs_storage_nodes)
+[ -z "$HOSTS" ] && HOSTS=$(get_beegfs_storage_nodes)
 
-CONF="/etc/default/fhgfs-ctl-zfs-getquota.conf"
+CONF="/etc/default/beegfs-ctl-zfs-getquota.conf"
 
 if [ -f $CONF ]; then
   source $CONF
 fi
 
 ZFS_FILESYSTEM=${ZFS_FILESYSTEM:='tank'}
-COLLECTOR_OUTPUT_PREFIX=${COLLECTOR_OUTPUT_PREFIX:='/tmp/fhgfs-ctl-zfs-getquota-collector'}
+COLLECTOR_OUTPUT_PREFIX=${COLLECTOR_OUTPUT_PREFIX:='/tmp/beegfs-ctl-zfs-getquota-collector'}
 USERSPACE_OUTPUT="${COLLECTOR_OUTPUT_PREFIX}.userspace"
 GROUPSPACE_OUTPUT="${COLLECTOR_OUTPUT_PREFIX}.groupspace"
 
@@ -28,8 +28,8 @@ exec_cmd ": > ${USERSPACE_OUTPUT}"
 exec_cmd ": > ${GROUPSPACE_OUTPUT}"
 
 for host in $HOSTS; do
-  # Get storeStorageDirectory value from fhgfs-storage.conf
-  storeStorageDirectory=$(ssh -nq root@${host} "awk '/^storeStorageDirectory/{print \$NF }' /etc/fhgfs/fhgfs-storage.conf")
+  # Get storeStorageDirectory value from beegfs-storage.conf
+  storeStorageDirectory=$(ssh -nq root@${host} "awk '/^storeStorageDirectory/{print \$NF }' /etc/beegfs/beegfs-storage.conf")
   # Determine if storeStorageDirectory is a mounted ZFS filesystem
   filesystem=$(ssh -nq root@${host} "grep '${storeStorageDirectory}' /proc/mounts | awk '{ print \$1 }'")
   if [ -z "$filesystem" ]; then
