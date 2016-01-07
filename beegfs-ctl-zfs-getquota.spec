@@ -7,7 +7,7 @@ URL:		    https://github.com/treydock/%{name}
 Source0:	  %{name}-%{version}.tar.gz
 BuildRoot:	%(mktemp -ud %{_tmppath}/%{name}-%{version}-%{release}-XXXXXX)
 
-Requires: python(prettytable)
+Requires: python-prettytable
 
 %description
 This project is intended to allow a method to collect user and group space usage across a set BeeGFS storage nodes that run ZFS.

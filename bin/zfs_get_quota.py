@@ -8,6 +8,7 @@ import os
 import prettytable
 import pwd
 import re
+import shutil
 import sys
 from datetime import datetime
 
